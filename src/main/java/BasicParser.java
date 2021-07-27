@@ -5,8 +5,8 @@ class BasicParser{
         int index = 0;  
         //I was having trouble importing a package to parse JSON, so I did some silly parsing myself below. This can be improved upon greatly
         try { 
-             index = response.indexOf("FIBTG");  
-             while (response.charAt(index) != ':' ){ //Gets the index of the first colon
+            index = response.indexOf("FIBTG");  
+            while (response.charAt(index) != ':' ){ //Gets the index of the first colon
                 index++; 
             }  
             index++; 
@@ -21,10 +21,11 @@ class BasicParser{
             fiber = result.toString();   
         }       //Finds the fiber entry for the top result from the search for the food input.  
         catch(Exception test){ 
-            System.out.println("Food not found! Please try a different string."); 
+            System.err.println("Food not found! Please try a different string."); 
             fiber = "Code Red";
         }
-        return fiber;
+        return fiber; 
+        //branchtest
     }
     
 
