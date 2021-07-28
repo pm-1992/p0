@@ -11,22 +11,14 @@ class HttpInterface2 {
     public static String app_key = "&app_key=bcceec77e2f81e90803fbd92f2aad235";  
     public static String parserAccessPoint = "https://api.edamam.com/api/food-database/v2/parser";  
    
-    
-    public static String getAppId(){ 
-        return app_id;
-    } 
-    public static String getAppKey(){ 
-        return app_key;
-    } 
     public  static String appendAccessPoint(String input){  //Builds the request URL using the food input
-        String Result = parserAccessPoint + app_id + app_key + "&ingr=" + input + "&nutrition-type=logging";
-        
+        String Result = parserAccessPoint + app_id + app_key + "&ingr=" + input + "&nutrition-type=logging";      
         return Result;
 
     }
-    public static StringBuffer sendHttp( String urlInput) throws MalformedURLException, IOException
+    public static StringBuffer sendHttp( String input) throws MalformedURLException, IOException
     { 
-       // HttpInterface2 connOne = new HttpInterface2();  
+        String urlInput = HttpInterface2.appendAccessPoint(input);
         URL conUrl = new URL(urlInput); //Creates the HTTP requests using the food input
         HttpURLConnection con = (HttpURLConnection) conUrl.openConnection(); //Opens the connection using the generated URL
         con.setRequestMethod("GET"); //Sets the request method for the connection

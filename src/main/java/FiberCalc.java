@@ -6,7 +6,7 @@ import java.net.MalformedURLException;
 class FiberCalc {
     public static void main(String[] args) throws MalformedURLException, IOException{  
         String foodInput = args[0]; //Stores the user's desired food input
-        String fiber = BasicParser.fiberParse(HttpInterface2.sendHttp(HttpInterface2.appendAccessPoint(foodInput)));  
+        String fiber = BasicParser.fiberParse(HttpInterface2.sendHttp(foodInput));  
         if (fiber == "Code Red") 
             return; 
         else
