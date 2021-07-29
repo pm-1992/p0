@@ -12,7 +12,7 @@ class HttpInterface2 {
     public static String parserAccessPoint = "https://api.edamam.com/api/food-database/v2/parser";  
    
     public  static String appendAccessPoint(String input){  //Builds the request URL using the food input
-        String Result = parserAccessPoint + app_id + app_key + "&ingr=" + input + "&nutrition-type=logging";      
+        String Result = parserAccessPoint + app_id + app_key + "&ingr=" + input + "&nutrition-type=cooking";      
         return Result;
 
     }
