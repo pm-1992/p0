@@ -1,14 +1,21 @@
 import java.io.IOException;
 import java.util.Scanner;
 
-public class InputParser {  
+public class InputParser {  //Parser class to parse inputs and allow for multi-word searches into the food database
 
-    public static String original = null;
-    public static String parseInput() throws IOException { 
-        
+    public static String original = null; 
+    public static void collectInput(){  
+
         Scanner in = new Scanner(System.in);   
-        original = in.nextLine(); 
-        StringBuffer result  = new StringBuffer(original); 
+        original = in.nextLine();   
+        in.close(); 
+    } 
+
+    public static String parseInput(String input) throws IOException { 
+        
+        //Scanner in = new Scanner(System.in);   
+        //original = in.nextLine(); 
+        StringBuffer result  = new StringBuffer(input); 
         int index2 = 0;  
         while (index2 < result.length()) 
         {    
@@ -21,8 +28,15 @@ public class InputParser {
                 index2++;
             }
         }   
-        in.close();
+        
         return result.toString();
+    } 
+
+    public static String createParsedFood() throws IOException{ 
+        
+        collectInput(); 
+        String result = parseInput(original);
+        return result; 
     }
     
 }
