@@ -1,9 +1,8 @@
-class BasicParser{ 
+class BasicParser{ //Just gets the fiber value for one serving, no longer used in main flow of program
     public static String fiberParse (StringBuffer response) {  
         String fiber = " ";
         int index2 = 0;  
         int index = 0;  
-        //I was having trouble importing a package to parse JSON, so I did some silly parsing myself below. This can be improved upon greatly
         try { 
             index = response.indexOf("FIBTG");  
             while (response.charAt(index) != ':' ){ //Gets the index of the first colon
@@ -25,7 +24,7 @@ class BasicParser{
             fiber = "Code Red";
         }
         return fiber; 
-        //branchtest
+
     }
     
 

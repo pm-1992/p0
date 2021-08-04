@@ -1,4 +1,4 @@
-public class ingredients {
+public class ingredients { //Class for building JSON output from user inputs
     public float quantity; 
     public String measureURI; 
     public String foodId; 

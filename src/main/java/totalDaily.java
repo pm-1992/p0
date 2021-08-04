@@ -1,4 +1,4 @@
-public class totalDaily {
+public class totalDaily {   //Holds all available daily percentage nutrition information for the requested food, quantity and measurement 
     public nutrition ENERC_KCAL; 
     public nutrition FAT; 
     public nutrition FASAT; 

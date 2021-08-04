@@ -12,46 +12,46 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json4s.JsonInput;
 
 
-public class driver { 
+public class driver {  //Class to handle the flow of the program and get inputs from the user
 
-    jsonHandler handler;  
-    jsonHandler2 handler2;
-    static String foodSelection; 
-    int foodNum; 
-    public String URI; 
+    jsonHandler handler;  //Class to hold the initial JSON response from the API
+    jsonHandler2 handler2; //Class to hold the 2nd JSON response from the API
+    static String foodSelection; //Holds the user's selected food
+    int foodNum; //Holds the user's selected food's index in the hints array
+    public String URI; //
     String measureLabel; 
     public jsonOutput out;  
 
-    public driver(){ 
+    public driver(){  //Instantiates object for creating JSON output
         out = new jsonOutput();
     }
 
     
-    public void run() throws JsonMappingException, JsonProcessingException, MalformedURLException, IOException{ 
-        this.parseResponse(HttpInterface2.sendHttp(InputParser.createParsedFood())); 
-        this.showOptions();   
-        this.collectFoodInput(); 
-        this.showSelection(); 
-        this.measurementSelection(); 
-        this.getQuantity();   
-        this.parseResponse2(HttpInterface2.postHttp(this.createJson()));
-        this.writeToFile();
+    public void run() throws JsonMappingException, JsonProcessingException, MalformedURLException, IOException{  //Goes through the basic flow of the program to make a nutrition query from the Edamam food API
+        this.parseResponse(HttpInterface2.sendHttp(InputParser.createParsedFood())); //Gets and parses the user input, sends the first HTTP GET to the API, and parses the JSON response
+        this.showOptions();   //Shows the user a list of the top 20 results from the API parser for their query
+        this.collectFoodInput(); //Gets the user's selection among the top 20 results
+        this.showSelection(); //Shows more specific information, gives the user available measurement units to select,
+        this.measurementSelection(); //Gets the user's preferred measurement unit
+        this.getQuantity();   //Gets the quantity of that measurement unit the user wants nutrition information for
+        this.parseResponse2(HttpInterface2.postHttp(this.createJson())); //Creates the JSON output using the information gathered from the user above, sends an HTTP POST to the API, and returns specific nutrition information
+        this.writeToFile(); //Writes the final requested nutrition information to file
     } 
     public void parseResponse(StringBuffer input) throws JsonMappingException, JsonProcessingException 
-    { 
+    {  // Parses the first JSON response
         ObjectMapper objectMapper = new ObjectMapper(); 
-        //objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         this.handler = objectMapper.readValue (input.toString(), jsonHandler.class); 
     } 
 
-    public void parseResponse2(StringBuffer input) throws JsonMappingException, JsonProcessingException 
-    { 
-        ObjectMapper objectMapper = new ObjectMapper(); 
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    //Parses the second JSON response
+    public void parseResponse2(StringBuffer input) throws JsonMappingException, JsonProcessingException            
+    {  
+        ObjectMapper objectMapper = new ObjectMapper();                
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false); //Ignores configuration data at the end that the user does not need
         this.handler2 = objectMapper.readValue (input.toString(), jsonHandler2.class); 
     } 
 
-    public void showOptions() 
+    public void showOptions()  //Iterates through the top 20 results returned by the parser API and displays them with some information 
     { 
         int index = ( this.handler.hints.length ); 
         for( int index2 = 0; index2 < index; index2++){    
@@ -79,14 +79,14 @@ public class driver {
         
     }
     
-    public void collectFoodInput(){   
+    public void collectFoodInput(){   //Gets the user's desired food selection
         System.out.println("Enter the number that best matches your desired food or meal:");
         Scanner scan = new Scanner(System.in);   
         foodSelection = scan.nextLine();   
          
     }  
 
-    public void showSelection(){ 
+    public void showSelection(){  //Shows detailed information about the user's food selection
         Integer index = (Integer.decode (foodSelection) - 1);   
         foodNum = index; 
         this.out.ingredients[0].setfoodId(this.handler.hints[index].food.foodId);
@@ -111,59 +111,27 @@ public class driver {
                 System.out.println("Servings per container: " + this.handler.hints[index].food.servingsPerContainer);
         if (this.handler.hints[index].measures != null){ 
             
-            for( int index2 = 0; index2 < (this.handler.hints[index].measures.length ); index2++){  
+            for( int index2 = 0; index2 < (this.handler.hints[index].measures.length ); index2++){   //Iterates and displays all measurement units for user selection
                 System.out.println("Measure #" + (index2 + 1));
                 System.out.println("    Label: " + this.handler.hints[index].measures[index2].label);  
-                System.out.println("    Weight: " + this.handler.hints[index].measures[index2].weight + " grams"); /* 
-                if (this.handler.hints[index].measures[index2].qualified != null){   
-                    for( int index3 = 0; index3 < (this.handler.hints[index].measures[index2].qualified.length ); index3++){ 
-                        System.out.println("        Qualified list #" + (index3 + 1));  
-                        for( int index4 = 0; index4 < (this.handler.hints[index].measures[index2].qualified[index3].qualifiers.length); index4++){ 
-                            System.out.println("            Qualifier #" + (index4 + 1)); 
-                            System.out.println("            Label: " + this.handler.hints[index].measures[index2].qualified[index3].qualifiers[index4].label);
-                        }
-                        System.out.println("            Weight: " + this.handler.hints[index].measures[index2].qualified[index3].weight + " grams"); 
-                    }
-                }*/
+                System.out.println("    Weight: " + this.handler.hints[index].measures[index2].weight + " grams"); 
             }
         }   
     } 
 
    
-    public void measurementSelection(){ 
+    public void measurementSelection(){  //Gets the user's measurement unit selection
         System.out.println("Enter the number for the measurement unit you would like to use:");  
         Scanner scan = new Scanner(System.in);   
         String measure = scan.nextLine();   
         Integer index = (Integer.decode (measure) - 1) ;   
-        /*
-        Integer q1; 
-        Integer q2;
-        if (this.handler.hints[foodNum].measures[index].qualified != null){  
-            System.out.println("Enter the number for the qualified list that contains the qualifier you would like to use.");
-            System.out.println("If you do not wish to use a qualifier, enter 0:"); 
-            String qualified = scan.nextLine();  
-            q1 = (Integer.decode (qualified) - 1) ;  
-            if (q1 == -1){  
-                scan.close(); 
-                URI = this.handler.hints[foodNum].measures[index].uri; 
-                measureLabel = this.handler.hints[foodNum].measures[index].label;
-                return; 
-            }
-            System.out.println("Enter the number for the qualifier that you would like to use:"); 
-            String qualifier = scan.nextLine();  
-            q2 = (Integer.decode (qualifier) - 1) ; 
-            URI = this.handler.hints[foodNum].measures[index].qualified[q1].qualifiers[q2].uri;  
-            //System.out.println(URI); 
-            measureLabel = this.handler.hints[foodNum].measures[index].label + this.handler.hints[foodNum].measures[index].qualified[q1].qualifiers[q2].label;
-            scan.close(); 
-            return;
-        } */
         this.out.ingredients[0].setMeasure(this.handler.hints[foodNum].measures[index].uri);   
         measureLabel = this.handler.hints[foodNum].measures[index].label;
-        //System.out.println(URI);
         
     } 
 
+    
+    //Gets the user's quantity selection 
     public void getQuantity(){ 
         System.out.println("Enter how many " + measureLabel.toLowerCase() +"s of " + this.handler.hints[foodNum].food.label + " you want nutrition information for:");
         Scanner scan = new Scanner(System.in);  
@@ -172,13 +140,15 @@ public class driver {
         scan.close();
     } 
 
+    
+    //Creates JSON string for output using user inputs
     public String createJson() throws JsonProcessingException{ 
         ObjectMapper objectMapper = new ObjectMapper();  
         String result = objectMapper.writeValueAsString(out); 
-        //System.out.println(result); 
         return result;
     } 
 
+    //Writes all available nutrition information for the user's selected food, unit and quantity to file
     public void writeToFile() throws IOException{ 
         File output = new File("NutritionInformation.txt"); 
         FileWriter writer = new FileWriter("NutritionInformation.txt");    

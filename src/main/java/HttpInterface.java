@@ -32,7 +32,7 @@ class HttpInterface2 {
         return content;
     } 
 
-    public static StringBuffer postHttp(String input) throws IOException{  
+    public static StringBuffer postHttp(String input) throws IOException{   //Sends the POST request with the user's inputs in a JSON file, and then gets the final JSON response from the API
         URL conUrl = new URL(nutrientsAccessPoint); 
         HttpURLConnection con = (HttpURLConnection) conUrl.openConnection(); 
         con.setRequestMethod("POST"); 
@@ -40,16 +40,16 @@ class HttpInterface2 {
         con.setRequestProperty("Accept", "application/json"); 
         con.setDoOutput(true);
         DataOutputStream os = new DataOutputStream(con.getOutputStream());
-        os.writeBytes(input);
+        os.writeBytes(input); //Puts the JSON string in the output stream of connection
         os.flush();
         os.close(); 
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream())); //Get the final JSON response
         StringBuffer result = getResponse(in);   
         con.disconnect(); 
         return result;
     }
 
-    public static StringBuffer getResponse(BufferedReader in) throws IOException{ 
+    public static StringBuffer getResponse(BufferedReader in) throws IOException{     //Gets an HTTP response and puts it in a StringBuffer object
         String inputLine;        
         StringBuffer content = new StringBuffer();
         while ((inputLine = in.readLine()) != null) { //loops through the response input stream and adds them to the StringBuffer

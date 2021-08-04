@@ -1,20 +1,17 @@
 import java.io.IOException;
 import java.util.Scanner;
 
-public class InputParser {  //Parser class to parse inputs and allow for multi-word searches into the food database
+public class InputParser {  //Parser class to parse inputs and allow for multi-word searches into the food database by removing spaces from the input string
 
     public static String original = null; 
-    public static void collectInput(){   
+    public static void collectInput(){     //Gets the user input
         System.out.println("Enter a food or meal below:");
         Scanner in = new Scanner(System.in);   
         original = in.nextLine();   
-        //in.close(); 
     } 
 
-    public static String parseInput(String input) throws IOException { 
+    public static String parseInput(String input) throws IOException { //Replaces all spaces in the string with the %20 string, prepares the string to be used in a URI
         
-        //Scanner in = new Scanner(System.in);   
-        //original = in.nextLine(); 
         StringBuffer result  = new StringBuffer(input); 
         int index2 = 0;  
         while (index2 < result.length()) 
@@ -32,7 +29,7 @@ public class InputParser {  //Parser class to parse inputs and allow for multi-w
         return result.toString();
     } 
 
-    public static String createParsedFood() throws IOException{ 
+    public static String createParsedFood() throws IOException{  //Gets the user input and parses it
         
         collectInput(); 
         String result = parseInput(original);

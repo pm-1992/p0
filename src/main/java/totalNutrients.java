@@ -1,4 +1,4 @@
-public class totalNutrients {
+public class totalNutrients { //Holds all available total nutrition information for the requested food, quantity and measurement 
     public nutrition ENERC_KCAL; 
     public nutrition FAT; 
     public nutrition FASAT; 
