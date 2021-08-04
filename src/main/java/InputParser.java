@@ -4,11 +4,11 @@ import java.util.Scanner;
 public class InputParser {  //Parser class to parse inputs and allow for multi-word searches into the food database
 
     public static String original = null; 
-    public static void collectInput(){  
-
+    public static void collectInput(){   
+        System.out.println("Enter a food or meal below:");
         Scanner in = new Scanner(System.in);   
         original = in.nextLine();   
-        in.close(); 
+        //in.close(); 
     } 
 
     public static String parseInput(String input) throws IOException { 

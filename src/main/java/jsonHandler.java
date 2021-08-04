@@ -1,7 +1,4 @@
 
-
-
-
 public class jsonHandler {
      public String text; 
      public parsed[] parsed; 
