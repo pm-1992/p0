@@ -26,9 +26,17 @@ public class driver {  //Class to handle the flow of the program and get inputs 
         out = new jsonOutput();
     }
 
+    public driver(jsonOutput input){ 
+        out = input; 
+        out.ingredients[0] = input.ingredients[0];
+    }
     
     public void run() throws JsonMappingException, JsonProcessingException, MalformedURLException, IOException{  //Goes through the basic flow of the program to make a nutrition query from the Edamam food API
-        this.parseResponse(HttpInterface2.sendHttp(InputParser.createParsedFood())); //Gets and parses the user input, sends the first HTTP GET to the API, and parses the JSON response
+        this.parseResponse(HttpInterface2.sendHttp(InputParser.createParsedFood())); //Gets and parses the user input, sends the first HTTP GET to the API, and parses the JSON response 
+        if (this.handler.hints.length == 0){   
+            System.err.println("That food item was not found!");
+            return; 
+        }
         this.showOptions();   //Shows the user a list of the top 20 results from the API parser for their query
         this.collectFoodInput(); //Gets the user's selection among the top 20 results
         this.showSelection(); //Shows more specific information, gives the user available measurement units to select,
