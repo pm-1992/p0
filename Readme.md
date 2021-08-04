@@ -1,7 +1,10 @@
 #Fiber Calculator 
 - This app will take a food or ingredient input via command line argument, 
 query the Edamam food database API, and then 
-display the the top 20 results based on the user's input. 
+display the the top 20 results based on the user's input. Next, it gets the users 
+desired food selection, quantity, and measurement unit. This information is sent to the  
+API and detailed full nutrition information is returned, which is parsed and returned to 
+file.
 
 - Developed and functional features:
 	- Enter a food and get the top result's fiber value returned in grams 
